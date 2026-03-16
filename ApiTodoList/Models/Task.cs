@@ -9,5 +9,5 @@ public class Task
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime DueDate { get; set; }
-        public TaskStatus Status { get; set; }
+        public bool TaskStatus  { get; set; }
 }
