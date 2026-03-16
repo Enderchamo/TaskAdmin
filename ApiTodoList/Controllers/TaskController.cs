@@ -58,5 +58,20 @@ namespace ApiTodoList.Controllers
             _service.DeleteTask(id);
             return NoContent();//codigo 204
         }
+
+        [HttpPatch ("{id}/status")]
+        public ActionResult UpdateTaskStatus(int id, [FromBody]bool status)
+        {
+            
+            try
+            {
+                _service.UpdateTaskStatus(id, status);
+                return NoContent(); // Devuelve 204 si todo salió bien
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
     }
 }
