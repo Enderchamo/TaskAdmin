@@ -15,4 +15,6 @@ public interface ITaskService
 
     public TaskModel CreateTask( string Title,string? Description,DateTime CreationDate,DateTime DueDate);
 
+    void UpdateTaskStatus(int id, bool status);
+
 }

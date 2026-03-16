@@ -80,5 +80,22 @@ public class TaskService : ITaskService
         _repository.SaveAllTasks(list);
     }
 
+    public void UpdateTaskStatus(int id, bool status)
+    {
+        
+        var list = _repository.GetAllTasks();
+        
+        
+        var task = list.FirstOrDefault(t => t.Id == id);
+
+        if (task == null)
+        {
+            throw new Exception("No se ha encontrado la tarea");
+        }
     
+        task.TaskStatus = status;
+
+    
+        _repository.SaveAllTasks(list);
+    }
 }
