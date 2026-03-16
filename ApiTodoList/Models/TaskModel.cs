@@ -2,7 +2,7 @@ using System;
 
 namespace ApiTodoList.Models;
 
-public class Task
+public class TaskModel
 {
         public required int Id { get; set; }
         public required string Title { get; set; }
