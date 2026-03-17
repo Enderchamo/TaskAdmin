@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard Pro</title>
+    <link rel="icon" href="Img/libro-abierto.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bs-primary: #ffc107;
+            --bs-primary-rgb: 255, 193, 7;
+        }
+
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+        .sidebar { background-color: #ffffff; height: 100vh; border-right: 1px solid #eaeaea; padding-top: 20px; }
+        
+        .nav-item { padding: 10px 20px; color: #6c757d; font-weight: 600; cursor: pointer; border-radius: 8px; margin: 0 10px 5px 10px; transition: 0.3s; }
+        .nav-item:hover, .nav-item.active { background-color: #fff8cc; color: #d39e00; }
+        .main-content { height: 100vh; overflow-y: auto; padding: 30px 40px; }
+        
+        .hero-banner { 
+            background-color: #1e293b; 
+            border-left: 8px solid #ffc107; 
+            border-radius: 20px; 
+            padding: 40px; 
+            position: relative; 
+            overflow: hidden; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .hero-banner h2 { color: #ffffff; font-weight: 800; }
+        .hero-banner p { color: #cbd5e1; font-weight: 500; }
+
+        .btn-primary { background-color: #ffc107; color: #000; border-color: #ffc107; }
+        .btn-primary:hover { background-color: #e0a800; color: #000; border-color: #e0a800; }
+        .btn-outline-primary { color: #d39e00; border-color: #ffc107; }
+        .btn-outline-primary:hover, .btn-check:checked + .btn-outline-primary { background-color: #ffc107; color: #000; border-color: #ffc107; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+
+            <div class="col-md-2 sidebar d-none d-md-block">
+                <div class="d-flex align-items-center px-4 mb-5">
+                    <img src="Img/libro-abierto.png" alt="Logo" class="flex-shrink-0" style="width: 35px; height: 35px; object-fit: contain; margin-right: 10px;">
+                    <h5 class="m-0 fw-bold text-truncate">TASK Manager</h5>
+                </div>
+
+                <div class="px-4 mb-4">
+                    <button class="btn w-100 fw-bold shadow-sm" 
+                            style="background-color: #1e293b; color: #ffc107; border-radius: 10px; padding: 10px; transition: 0.2s;" 
+                            onclick="prepararNuevaTarea()"
+                            onmouseover="this.style.backgroundColor='#0f172a'" 
+                            onmouseout="this.style.backgroundColor='#1e293b'"> 
+                            Nueva Tarea <i class="bi bi-plus-circle-fill ms-2"></i>
+                    </button>
+                </div>
+
+                <div class="nav-item active"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</div>
+                <div class="nav-item"><i class="bi bi-list-task me-2"></i> Tareas</div>
+                <div class="nav-item"><i class="bi bi-gear me-2"></i> Ajustes</div>
+            </div>
+
+            <div class="col-md-10 main-content">
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="fw-bold m-0">Dashboard</h4>
+                        <small class="text-muted" id="fecha-actual">Cargando...</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-envelope text-muted fs-5"></i>
+                        <i class="bi bi-bell text-muted fs-5"></i>
+                        <div class="rounded-circle d-flex justify-content-center align-items-center fw-bold shadow-sm" 
+                            style="width: 40px; height: 40px; background-color: #1e293b !important; color: #ffc107;">
+                            IT
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-banner shadow-sm mb-5">
+                    <h2>¡Bienvenido!</h2>
+                    <p class="mb-0">¿Listo para comenzar el día y cumplir tus objetivos?</p>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-md-3">
+                        <div class="card border-0 rounded-4 p-3 shadow-sm" style="background-color: #1e293b; color: #ffffff;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><h3 class="fw-bold m-0" id="stat-total">0</h3><small>Total Tareas</small></div>
+                                <i class="bi bi-list-task fs-1" style="color: #ffc107;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 rounded-4 p-3 shadow-sm" style="background-color: #ffffff; color: #1e293b; border-left: 5px solid #10b981 !important;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><h3 class="fw-bold m-0" id="stat-completadas">0</h3><small class="text-muted fw-bold">Completadas</small></div>
+                                <i class="bi bi-check-circle fs-1" style="color: #10b981;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 rounded-4 p-3 shadow-sm" style="background-color: #ffc107; color: #1e293b;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><h3 class="fw-bold m-0" id="stat-pendientes">0</h3><small class="fw-bold">Pendientes</small></div>
+                                <i class="bi bi-clock-history fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 rounded-4 p-3 shadow-sm" style="background-color: #ffffff; color: #1e293b; border-left: 5px solid #1e293b !important;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><h3 class="fw-bold m-0" id="stat-progreso">0%</h3><small class="text-muted fw-bold">Progreso</small></div>
+                                <i class="bi bi-graph-up fs-1" style="color: #1e293b;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold m-0">Tus Tareas</h5>
+
+                    <div class="btn-group shadow-sm" role="group">
+                        <input type="radio" class="btn-check" name="btnradio" id="filtro-todas" checked onchange="cargarDashboard('todas')">
+                        <label class="btn btn-outline-primary" for="filtro-todas">Todas</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="filtro-pendientes" onchange="cargarDashboard('pendientes')">
+                        <label class="btn btn-outline-primary" for="filtro-pendientes">Pendientes</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="filtro-completadas" onchange="cargarDashboard('completadas')">
+                        <label class="btn btn-outline-primary" for="filtro-completadas">Completadas</label>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 mb-5">
+                    <div class="card-body p-0" id="task-container">
+                        <div class="p-5 text-center text-muted">
+                            <div class="spinner-border text-primary mb-3" role="status"></div>
+                            <p>Conectando con la API en C#...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNuevaTarea" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Crear Tarea</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="form-tarea">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Título *</label>
+                            <input type="text" id="input-titulo" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Descripción</label>
+                            <textarea id="input-descripcion" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Fecha Límite *</label>
+                            <input type="date" id="input-fecha" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold rounded-pill">Guardar Tarea</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="app.js"></script>
+</body>
+</html>
