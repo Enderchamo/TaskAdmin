@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "Id": 1,
+    "Title": "Dise\u00F1ar interfaz de usuario (UI)",
+    "Description": "Aplicar paleta de colores azul marino y amarillo mostaza usando componentes de Bootstrap 5.",
+    "CreationDate": "0001-01-01T00:00:00",
+    "DueDate": "2026-03-14T18:00:00Z",
+    "TaskStatus": true
+  },
+  {
+    "Id": 2,
+    "Title": "Desarrollar API REST en C#",
+    "Description": "Crear los endpoints (GET, POST, PUT, PATCH, DELETE) asegurando la persistencia de datos en archivo JSON.",
+    "CreationDate": "0001-01-01T00:00:00",
+    "DueDate": "2026-03-16T23:59:00Z",
+    "TaskStatus": true
+  },
+  {
+    "Id": 3,
+    "Title": "Integrar Frontend con Backend",
+    "Description": "Consumir la API desde app.js utilizando la funci\u00F3n fetch() y manejar los errores de red.",
+    "CreationDate": "0001-01-01T00:00:00",
+    "DueDate": "2026-03-18T17:00:00Z",
+    "TaskStatus": false
+  },
+  {
+    "Id": 4,
+    "Title": "Preparar empaquetado final",
+    "Description": "Borrar carpetas bin/obj del proyecto C#, verificar r\u00FAbrica de evaluaci\u00F3n y comprimir en ZIP para entrega.",
+    "CreationDate": "0001-01-01T00:00:00",
+    "DueDate": "2026-03-19T12:00:00Z",
+    "TaskStatus": false
+  }
+]
