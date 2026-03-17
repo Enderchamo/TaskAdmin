@@ -6,7 +6,7 @@ namespace ApiTodoList.Interfaces;
 
 public interface ITaskService
 {
-    List<TaskModel> GetAllTasks();
+    List<TaskModel> GetAllTasks(string? status = null);
     public TaskModel? GetTaskById(int id);
 
     void UpdateTask(UpdateTask task, int id);
@@ -15,6 +15,6 @@ public interface ITaskService
 
     public TaskModel CreateTask( string Title,string? Description,DateTime CreationDate,DateTime DueDate);
 
-    void UpdateTaskStatus(int id, bool status);
+    void MarkAsCompleted(int id);
 
 }

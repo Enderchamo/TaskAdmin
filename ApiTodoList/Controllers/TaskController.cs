@@ -19,9 +19,10 @@ namespace ApiTodoList.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<TaskModel>> GetAll()
+        public ActionResult<List<TaskModel>> GetAll([FromQuery] string? status)
         {
-            return Ok(_service.GetAllTasks());
+
+            return Ok(_service.GetAllTasks(status));
         }
 
         [HttpGet ("{id}")]
@@ -35,6 +36,10 @@ namespace ApiTodoList.Controllers
         [HttpPost]
         public ActionResult CreateTask(CreateTask newTask)
         {
+            if (newTask.DueDate.Date < DateTime.Now.Date)
+            {
+                return BadRequest(new { message = "La fecha límite no puede ser anterior a hoy." });
+            }
             
             var createdTask = _service.CreateTask(newTask.Title, newTask.Description, DateTime.Now ,newTask.DueDate);
 
@@ -55,21 +60,33 @@ namespace ApiTodoList.Controllers
         [HttpDelete ("{id}")]
         public ActionResult DeleteTask(int id)
         {
-            _service.DeleteTask(id);
-            return NoContent();//codigo 204
+            try
+            {
+                _service.DeleteTask(id);
+                return NoContent();//codigo 204
+            }    
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message});
+            }
         }
 
-        [HttpPatch ("{id}/status")]
-        public ActionResult UpdateTaskStatus(int id, [FromBody]bool status)
+        [HttpPatch ("{id}/complete")]
+        public ActionResult UpdateTaskStatus(int id)
         {
             
             try
             {
-                _service.UpdateTaskStatus(id, status);
+                _service.MarkAsCompleted(id);
                 return NoContent(); // Devuelve 204 si todo salió bien
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
+                
                 return NotFound(new { message = ex.Message });
             }
         }

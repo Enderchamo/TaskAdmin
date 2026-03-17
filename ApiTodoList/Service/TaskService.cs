@@ -42,9 +42,22 @@ public class TaskService : ITaskService
         return task;
     }
 
-    List<TaskModel> ITaskService.GetAllTasks()
+    List<TaskModel> ITaskService.GetAllTasks(string? status = null)
     {
-        return _repository.GetAllTasks();
+        var list = _repository.GetAllTasks();
+        if (!string.IsNullOrEmpty(status))
+        {
+            if (status.ToLower() == "completed")
+            {
+                list = list.Where(t => t.TaskStatus == true).ToList();
+            }
+
+            else if (status.ToLower() == "pending")
+            {
+                list = list.Where(t => t.TaskStatus == false).ToList();
+            }
+        }
+        return list;
     }
 
     public TaskModel? GetTaskById(int id)
@@ -75,27 +88,34 @@ public class TaskService : ITaskService
     public void DeleteTask(int id)
     {
         var list = _repository.GetAllTasks();
-        list = list.Where(p=> p.Id != id).ToList();
+        var taskToDelete = list.FirstOrDefault(p=>p.Id==id);
 
+        if (taskToDelete == null)
+        {
+            throw new Exception("No se ha encontrado la tarea");
+        }
+
+        list.Remove(taskToDelete);
         _repository.SaveAllTasks(list);
     }
 
-    public void UpdateTaskStatus(int id, bool status)
+    public void MarkAsCompleted(int id)
     {
         
-        var list = _repository.GetAllTasks();
-        
-        
+        var list = _repository.GetAllTasks();  
         var task = list.FirstOrDefault(t => t.Id == id);
 
         if (task == null)
         {
             throw new Exception("No se ha encontrado la tarea");
         }
-    
-        task.TaskStatus = status;
 
+        if (task.TaskStatus==true)
+        {
+            throw new InvalidOperationException("La tarea ya esta completada");
+        }
     
+        task.TaskStatus = true;
         _repository.SaveAllTasks(list);
     }
 }
