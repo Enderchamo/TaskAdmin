@@ -1,6 +1,6 @@
-// =========================================================
+
 // CONFIGURACIÓN INICIAL
-// =========================================================
+
 const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 document.getElementById('fecha-actual').textContent = new Date().toLocaleDateString('es-ES', opcionesFecha);
 
@@ -13,9 +13,9 @@ if (inputFecha) {
     inputFecha.setAttribute('min', hoy);
 }
 
-// =========================================================
+
 // 1. CARGAR DASHBOARD
-// =========================================================
+
 async function cargarDashboard(filtro = 'todas') {
     try {
         let urlFinal = API_URL;
@@ -41,9 +41,9 @@ async function cargarDashboard(filtro = 'todas') {
     }
 }
 
-// =========================================================
+
 // 2. ACTUALIZAR ESTADÍSTICAS
-// =========================================================
+
 function actualizarEstadisticas(tareas) {
     const total = tareas.length;
     const completadas = tareas.filter(t => t.taskStatus).length;
@@ -56,9 +56,9 @@ function actualizarEstadisticas(tareas) {
     document.getElementById('stat-progreso').innerText = progreso + '%';
 }
 
-// =========================================================
+
 // 3. DIBUJAR LA LISTA DE TAREAS
-// =========================================================
+
 function dibujarLista(tareas) {
     const contenedor = document.getElementById('task-container');
     contenedor.innerHTML = '';
@@ -68,10 +68,26 @@ function dibujarLista(tareas) {
         return;
     }
 
+    // Obtenemos la fecha de hoy a las 00:00 para comparar correctamente
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
     tareas.forEach(tarea => {
         const fecha = new Date(tarea.dueDate).toLocaleDateString('es-ES');
         const tachado = tarea.taskStatus ? 'text-decoration-line-through text-muted' : '';
         const marcado = tarea.taskStatus ? 'checked disabled' : '';
+
+        // --- LÓGICA DE TAREA VENCIDA RECUPERADA ---
+        const fechaLimite = new Date(tarea.dueDate);
+        fechaLimite.setHours(0, 0, 0, 0); // Ignoramos la hora para comparar solo el día
+        
+        // Verificamos si la fecha ya pasó Y la tarea no está completada
+        const estaVencida = fechaLimite < hoy && !tarea.taskStatus;
+        
+        // Asignamos colores y etiquetas si está vencida
+        const colorTexto = estaVencida ? 'text-danger fw-bold' : 'text-muted';
+        const badgeVencida = estaVencida ? '<span class="badge bg-danger ms-2">¡Vencida!</span>' : '';
+        // ------------------------------------------
 
         contenedor.innerHTML += `
             <div class="d-flex align-items-center justify-content-between border-bottom p-3" style="transition: 0.2s;">
@@ -80,8 +96,8 @@ function dibujarLista(tareas) {
                         <input class="form-check-input" type="checkbox" role="switch" ${marcado} onchange="completarTarea(event, ${tarea.id})">
                     </div>
                     <div>
-                        <h6 class="mb-0 fw-bold ${tachado}">${tarea.title}</h6>
-                        <small class="text-muted">${tarea.description || 'Sin descripción'} • Vence: ${fecha}</small>
+                        <h6 class="mb-0 fw-bold ${tachado}">${tarea.title} ${badgeVencida}</h6>
+                        <small class="${colorTexto}">${tarea.description || 'Sin descripción'} • Vence: ${fecha}</small>
                     </div>
                 </div>
                 <div class="d-flex gap-2">
@@ -96,10 +112,8 @@ function dibujarLista(tareas) {
         `;
     });
 }
-
-// =========================================================
 // 4. MANEJO DEL FORMULARIO
-// =========================================================
+
 document.getElementById('form-tarea').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -137,9 +151,9 @@ document.getElementById('form-tarea').addEventListener('submit', async (e) => {
     }
 });
 
-// =========================================================
+
 // 5. ACCIONES INDIVIDUALES
-// =========================================================
+
 function prepararNuevaTarea() {
     idEdicion = null;
     document.getElementById('form-tarea').reset();
@@ -181,9 +195,9 @@ async function completarTarea(e, id) {
     }
 }
 
-// CORRECCIÓN CLAVE: Función recibe 'e' y usa preventDefault
+
 function eliminarTarea(e, id) {
-    if (e) e.preventDefault(); // MAGIA: Evita que el navegador recargue la página
+    if (e) e.preventDefault(); //  Evita que el navegador recargue la página
 
     Swal.fire({
         title: '¿Estás seguro?',

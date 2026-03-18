@@ -21,7 +21,7 @@
     "Description": "Consumir la API desde app.js utilizando la funci\u00F3n fetch() y manejar los errores de red.",
     "CreationDate": "0001-01-01T00:00:00",
     "DueDate": "2026-03-18T17:00:00Z",
-    "TaskStatus": false
+    "TaskStatus": true
   },
   {
     "Id": 4,
