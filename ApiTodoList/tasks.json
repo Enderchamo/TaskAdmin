@@ -30,5 +30,13 @@
     "CreationDate": "0001-01-01T00:00:00",
     "DueDate": "2026-03-19T12:00:00Z",
     "TaskStatus": false
+  },
+  {
+    "Id": 6,
+    "Title": "Prueba tarea vencida",
+    "Description": "",
+    "CreationDate": "2026-03-12T01:30:40.6265627-04:00",
+    "DueDate": "2026-03-12T00:00:00",
+    "TaskStatus": false
   }
 ]
