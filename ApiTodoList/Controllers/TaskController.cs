@@ -36,6 +36,12 @@ namespace ApiTodoList.Controllers
         [HttpPost]
         public ActionResult CreateTask(CreateTask newTask)
         {
+
+            if (string.IsNullOrWhiteSpace(newTask.Title))
+            {
+                return BadRequest(new { message = "El título de la tarea no puede estar vacío." });
+            }
+            
             if (newTask.DueDate.Date < DateTime.Now.Date)
             {
                 return BadRequest(new { message = "La fecha límite no puede ser anterior a hoy." });
@@ -51,9 +57,16 @@ namespace ApiTodoList.Controllers
         public ActionResult UpdateTask(int id, UpdateTask updatedTask)
         {
             
-            _service.UpdateTask(updatedTask,id);
-
-            return NoContent();//codigo 204
+            try 
+            {
+                _service.UpdateTask(updatedTask, id);
+                return NoContent(); // código 204
+            }
+            catch (Exception ex)
+            {
+        
+                return NotFound(new { message = ex.Message }); 
+            }
 
         }
 

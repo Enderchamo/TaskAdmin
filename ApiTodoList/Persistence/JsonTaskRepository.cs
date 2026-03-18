@@ -16,15 +16,17 @@ public class JsonTaskRepository : ITaskRepository
             return new List<TaskModel>();
         }
 
-        string text= File.ReadAllText(_filePath);
-
-        var TaskList = JsonSerializer.Deserialize<List<TaskModel>>(text);
-
-        if (TaskList != null)
+        try 
         {
-            return TaskList;
+            string text = File.ReadAllText(_filePath);
+            var TaskList = JsonSerializer.Deserialize<List<TaskModel>>(text);
+            return TaskList ?? new List<TaskModel>();
         }
-        return new List<TaskModel>();
+        catch (JsonException) 
+        {
+        
+            return new List<TaskModel>(); 
+        }
     }
 
     public void SaveAllTasks(List<TaskModel> tasks)
