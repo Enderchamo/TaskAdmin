@@ -68,7 +68,7 @@ function dibujarLista(tareas) {
         return;
     }
 
-    // Obtenemos la fecha de hoy a las 00:00 para comparar correctamente
+  
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
@@ -77,17 +77,17 @@ function dibujarLista(tareas) {
         const tachado = tarea.taskStatus ? 'text-decoration-line-through text-muted' : '';
         const marcado = tarea.taskStatus ? 'checked disabled' : '';
 
-        // --- LÓGICA DE TAREA VENCIDA RECUPERADA ---
+       
         const fechaLimite = new Date(tarea.dueDate);
-        fechaLimite.setHours(0, 0, 0, 0); // Ignoramos la hora para comparar solo el día
+        fechaLimite.setHours(0, 0, 0, 0); 
         
-        // Verificamos si la fecha ya pasó Y la tarea no está completada
+       
         const estaVencida = fechaLimite < hoy && !tarea.taskStatus;
         
-        // Asignamos colores y etiquetas si está vencida
+     
         const colorTexto = estaVencida ? 'text-danger fw-bold' : 'text-muted';
         const badgeVencida = estaVencida ? '<span class="badge bg-danger ms-2">¡Vencida!</span>' : '';
-        // ------------------------------------------
+      
 
         contenedor.innerHTML += `
             <div class="d-flex align-items-center justify-content-between border-bottom p-3" style="transition: 0.2s;">
